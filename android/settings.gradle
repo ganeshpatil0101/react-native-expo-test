@@ -1,0 +1,3 @@
+rootProject.name = 'trackDirectMF'
+
+include ':app'
