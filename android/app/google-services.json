@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "739786407722",
+    "firebase_url": "https://trackdirectmf.firebaseio.com",
+    "project_id": "trackdirectmf",
+    "storage_bucket": "trackdirectmf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739786407722:android:22746e4ce1de28bf",
+        "android_client_info": {
+          "package_name": "track.direct.mf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739786407722-oo44ipjgmsurbppd43m3jnl70rkr5509.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoJWp_v67COYaRbDCX6enHHfLZe67YcSc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,12 +5,16 @@ import { createDrawerNavigator, createStackNavigator, createAppContainer } from 
 import Home from './screen/home';
 import Card from './screen/card';
 import SideBar from './screen/sidebar';
+import Login from  './screen/login';
 const Drawer = createDrawerNavigator(
-    {
+  {
+    Login: { screen: Login }
+  },  
+  {
       Home: { screen: Home }
     },
     {
-      initialRouteName: "Home",
+      initialRouteName: "Login",
       contentOptions: {
         activeTintColor: "#e91e63"
       },
