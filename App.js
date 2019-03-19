@@ -21,10 +21,10 @@ export default class App extends Component<Props> {
     });
       // Initialize Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyAPwoCXgRZiDRb09yAvT9tQ_ePQu6PoxRw",
-    authDomain: "trackdirectmf.firebaseapp.com",
-    databaseURL: "https://trackdirectmf.firebaseio.com",
-    storageBucket: "trackdirectmf.appspot.com"
+    apiKey: "",
+    authDomain: ".firebaseapp.com",
+    databaseURL: "https://.firebaseio.com",
+    storageBucket: ".appspot.com"
   };
 
   firebase.initializeApp(firebaseConfig);
