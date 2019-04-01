@@ -6,23 +6,35 @@ import Home from './screen/home';
 import Card from './screen/card';
 import SideBar from './screen/sidebar';
 import Login from  './screen/login';
+import MfList from './screen/mf/mfList';
+
+// TODO
+// import { YellowBox } from 'react-native';
+// import _ from 'lodash';
+
+// YellowBox.ignoreWarnings(['Setting a timer']);
+// const _console = _.clone(console);
+// console.warn = message => {
+//   if (message.indexOf('Setting a timer') <= -1) {
+//     _console.warn(message);
+//   }
+// };
+
+
 const Drawer = createDrawerNavigator(
-  {
-    Login: { screen: Login }
-  },  
-  {
-      Home: { screen: Home }
+     {
+      Home: { screen: Home },
+      Login: { screen: Login },
+      MfList:{screen:MfList}
     },
     {
-      initialRouteName: "Login",
-      contentOptions: {
-        activeTintColor: "#e91e63"
-      },
+      initialRouteName: "MfList",
+      // contentOptions: {
+      //   activeTintColor: "#e91e63"
+      // },
       contentComponent: props => <SideBar {...props} />
     }
   );
-  
-  
 const AppNavigator = createStackNavigator(
     {
       Drawer: { screen: Drawer },

@@ -7,7 +7,7 @@ import { Font, AppLoading } from "expo";
 
 import Setup from "./src/boot/setup";
 import * as firebase from 'firebase';
-
+import * as firebaseConfig from './src/config.json';
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -20,16 +20,12 @@ export default class App extends Component<Props> {
       Roboto_medium: require("./assets/fonts/Roboto_medium.ttf")
     });
       // Initialize Firebase
-  const firebaseConfig = {
-    apiKey: "",
-    authDomain: ".firebaseapp.com",
-    databaseURL: "https://.firebaseio.com",
-    storageBucket: ".appspot.com"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-    this.setState({ fontLoaded: true });
+  if(!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
   }
+  this.setState({ fontLoaded: true });
+}
+  
   render() {
     if (!this.state.fontLoaded) {
       return <AppLoading />;

@@ -195,9 +195,14 @@ const datas = [
   {
     name: "Home",
     route: "Home",
-    icon: "arrow-up",
-    bg: "#477EEA",
-    types: "11"
+    icon: "home",
+    bg: "#477EEA"
+  },
+  {
+    name: "Mutual Fund List",
+    route: "MfList",
+    icon: "grid",
+    bg: "#48525D"
   }
 ];
 class SideBar extends Component {
