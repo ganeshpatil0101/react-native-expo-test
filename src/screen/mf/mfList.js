@@ -16,7 +16,7 @@ import {
 } from "native-base";
 import styles from "./styles.js";
 import { AppLoading } from "expo";
-
+import {NavigationActions} from 'react-navigation';
 import * as firebase from 'firebase';
 
 class MfList extends Component {
@@ -49,6 +49,15 @@ class MfList extends Component {
           });
           return pdata;
     }
+    gotToDetailsPage(data) {
+      const navigateAction = NavigationActions.navigate({
+        routeName: "MfDetails",
+        params: {
+          data:data,
+        },
+      });
+      this.props.navigation.dispatch(navigateAction);
+    }
   render() {
         if (!this.state.dataLoaded) {
             return <AppLoading />;
@@ -70,7 +79,7 @@ class MfList extends Component {
           <List
             dataArray={this.state.mfData}
             renderRow={data =>
-              <ListItem >
+              <ListItem>
                 {/* <Left>
                 </Left> */}
                 <Body>
@@ -82,10 +91,12 @@ class MfList extends Component {
                   </Text>
                 </Body>
                 <Right>
-                <Text>View</Text>
-                  {/* <Button>
-                    <Text>View</Text>
-                  </Button> */}
+                  <Text style={data.profitOrLoss <= 0 ? styles.red : styles.green}>
+                    {data.profitOrLoss}
+                  </Text>
+              <Button transparent onPress={() => this.gotToDetailsPage(data) }>
+                  <Icon name="arrow-forward" />
+                </Button>
                 </Right>
               </ListItem>}
           />

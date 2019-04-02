@@ -8,5 +8,11 @@ export default {
     },
     mb: {
       marginBottom: 15
+    },
+    green: {
+      color: '#00ff00'
+    },
+    red: {
+      color: '#ff0000'
     }
   };
