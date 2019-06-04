@@ -8,6 +8,7 @@ import SideBar from './screen/sidebar';
 import Login from  './screen/login';
 import MfList from './screen/mf/mfList';
 import MfDetails from './screen/mf/mfDetails';
+import MfAddEdit from './screen/mf/mfAddEdit';
 // TODO
 // import { YellowBox } from 'react-native';
 // import _ from 'lodash';
@@ -26,7 +27,8 @@ const Drawer = createDrawerNavigator(
       Home: { screen: Home },
       Login: { screen: Login },
       MfList:{screen:MfList},
-      MfDetails:{screen:MfDetails}
+      MfDetails:{screen:MfDetails},
+      MfAddEdit:{screen:MfAddEdit}
     },
     {
       initialRouteName: "MfList",

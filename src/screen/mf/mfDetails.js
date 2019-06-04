@@ -17,18 +17,28 @@ import {
 import styles from "./styles.js";
 import NumberFormat from 'react-number-format';
 
+import NavigateService from '../../services/navigate.service';
 class MfDetails extends Component {
     state = {
         dataLoaded: false,
         mfData:{}
       };
     componentWillMount() {
+      this.nservice = new NavigateService();
         // firebase.database().ref('MfList/'+id).on('value', (data)=>{
         //     this.setState({ dataLoaded: true });
         //     var pdata = [];
         //     pdata = this._prepareData(data.val());
         //     this.setState({mfData : pdata});
         // }, (err) => {console.error(err)} );
+    }
+    editMf(data) {
+      const { navigation } = this.props;
+      const _data = navigation.getParam('data', 'NO-ID');
+      this.nservice.navigateTo('MfAddEdit', {
+        data:_data,
+        action:'edit'
+      },navigation)
     }
   render() {
     const { navigation } = this.props;
@@ -51,6 +61,11 @@ class MfDetails extends Component {
             <Left>
               <Text>{data.name}</Text>
             </Left>
+            <Right>
+              <Button transparent onPress={()=>{this.editMf(data)}}>
+              <Icon name="ios-create" />
+              </Button>
+            </Right>
         </ListItem>
         <Separator bordered />
         <ListItem>
