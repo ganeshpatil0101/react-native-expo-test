@@ -37,13 +37,14 @@ class MfAddEdit extends Component {
       const didFocusSubscription = this.props.navigation.addListener(
         'didFocus',
         payload => {
-          const { navigation } = this.props;
-          const data = navigation.getParam('data', 'NO-ID');
-          const action = navigation.getParam('action', 'NO-Action');
+          const params = payload.action.params ;
+          const data = (params && params.data) ? params.data : {};
+          const action = (params && params.action) ? params.action : "";
           this.clearState();
+          data.action = action;
           if(action === 'edit') {
             this.setState(data);
-          } 
+          }
         }
       );
     }
@@ -68,7 +69,7 @@ class MfAddEdit extends Component {
       this.state.profitOrLoss = profitLoss;
       let data = clone(this.state);
       delete data.dataLoaded;
-      delete data.mfData;
+      delete data.action;
       this.setState({dataLoaded:false});
       this.fService.saveMfData(data).then(()=>{
         alert("Saved Successfully");
@@ -78,13 +79,9 @@ class MfAddEdit extends Component {
         }
       });
     }
-    _navigateToList() {
-      
-    }
     clearState() {
       this.setState({
         dataLoaded: true,
-        mfData:{},
         id:"",
         name:"",
         mfType:"",
@@ -93,12 +90,16 @@ class MfAddEdit extends Component {
         currentNav:"",
         currentValue:"",
         totalInvAmount:"",
-        profitOrLoss:""
+        profitOrLoss:"",
+        action:""
       });
     }
   render() {
-    const { navigation } = this.props;
-    const titleName = "Add New Mutual Fund";
+
+    let titleName = "Add New Mutual Fund";
+    if(this.state.action === 'edit') {
+      titleName = "Edit Mutual Fund";
+    }
       if (!this.state.dataLoaded) {
         return <Spinner color="blue" />;
     }
@@ -111,7 +112,7 @@ class MfAddEdit extends Component {
               <Icon name="arrow-back" />
             </Button>
           </Left>
-          <Body>
+          <Body style={{paddingRight:10, flex: 3}}>
             <Title>{titleName}</Title>
           </Body>
           <Right />
@@ -173,14 +174,9 @@ class MfAddEdit extends Component {
                     <Label>Total Invested Amount</Label>
                     <Input value={this.state.totalInvAmount} onChangeText= {(text)=> this.setState({totalInvAmount: text})}/>
                 </Item>
-                <Separator bordered />
-                <Item>
-                  
                   <Button block onPress={()=>{this.saveMf()}}>
                     <Text>Save</Text>
                   </Button>
-                  
-                </Item>
             </Form>
         </Content>
 

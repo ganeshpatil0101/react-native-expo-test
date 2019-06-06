@@ -65,11 +65,11 @@ class MfList extends Component {
       return (<Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
-          <Body>
+          <Body style={{paddingRight:10, flex: 3}}>
             <Title>Mutual Funds List</Title>
           </Body>
           <Right />

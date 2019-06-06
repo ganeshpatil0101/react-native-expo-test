@@ -12,7 +12,7 @@ import {
   Badge
 } from "native-base";
 import styles from "./style";
-
+import NavigateService from "../../services/navigate.service";
 const drawerCover = require("../../../assets/drawer-cover.png");
 const drawerImage = require("../../../assets/logo-kitchen-sink.png");
 /*
@@ -203,6 +203,12 @@ const datas = [
     route: "MfList",
     icon: "grid",
     bg: "#48525D"
+  },
+  {
+    name: " Add Mutual Fund",
+    route: "MfAddEdit",
+    icon: "ios-add-circle",
+    bg: "#48525D"
   }
 ];
 class SideBar extends Component {
@@ -212,6 +218,7 @@ class SideBar extends Component {
       shadowOffsetWidth: 1,
       shadowRadius: 4
     };
+    this.nservice = new NavigateService();
   }
 
   render() {
@@ -230,7 +237,7 @@ class SideBar extends Component {
               <ListItem
                 button
                 noBorder
-                onPress={() => this.props.navigation.navigate(data.route)}
+                onPress={() => this.nservice.navigateTo(data.route, {}, this.props.navigation)}
               >
                 <Left>
                   <Icon

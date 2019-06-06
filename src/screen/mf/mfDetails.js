@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Alert } from 'react-native';
 import {
   Container,
   Header,
@@ -18,6 +19,7 @@ import styles from "./styles.js";
 import NumberFormat from 'react-number-format';
 
 import NavigateService from '../../services/navigate.service';
+import Service from "../../services/service";
 class MfDetails extends Component {
     state = {
         dataLoaded: false,
@@ -25,12 +27,7 @@ class MfDetails extends Component {
       };
     componentWillMount() {
       this.nservice = new NavigateService();
-        // firebase.database().ref('MfList/'+id).on('value', (data)=>{
-        //     this.setState({ dataLoaded: true });
-        //     var pdata = [];
-        //     pdata = this._prepareData(data.val());
-        //     this.setState({mfData : pdata});
-        // }, (err) => {console.error(err)} );
+      this.service = new Service();
     }
     editMf(data) {
       const { navigation } = this.props;
@@ -38,7 +35,28 @@ class MfDetails extends Component {
       this.nservice.navigateTo('MfAddEdit', {
         data:_data,
         action:'edit'
-      },navigation)
+      },navigation);
+    }
+    deleteMf(data) {
+      Alert.alert(
+        'Delete Mutual Fund',
+        'Do you want to delete '+data.name,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => {
+            this.service.deleteMf(data.id).then(()=>{
+              console.log("mf deleted  ");
+              this.nservice.navigateTo('MfList', {}, this.props.navigation);
+            });
+          }
+        },
+        ],
+        {cancelable: false},
+      );
     }
   render() {
     const { navigation } = this.props;
@@ -50,7 +68,7 @@ class MfDetails extends Component {
               <Icon name="arrow-back" />
             </Button>
           </Left>
-          <Body>
+          <Body style={{paddingRight:10, flex: 3}}>
             <Title>{data.name}</Title>
           </Body>
           <Right />
@@ -63,7 +81,13 @@ class MfDetails extends Component {
             </Left>
             <Right>
               <Button transparent onPress={()=>{this.editMf(data)}}>
-              <Icon name="ios-create" />
+              <Icon type="AntDesign" name="edit" />
+              </Button>
+              
+            </Right>
+            <Right>
+            <Button transparent onPress={()=>{this.deleteMf(data)}}>
+                <Icon type="AntDesign" name="delete" />
               </Button>
             </Right>
         </ListItem>
@@ -121,7 +145,7 @@ class MfDetails extends Component {
 
         <ListItem>
             <Left>
-                <Text>Total Invested Amount</Text>
+                <Text>Total Inv. Amount</Text>
             </Left>
             <Body>
             <Badge success>
