@@ -17,25 +17,18 @@ import {
 import styles from "./styles.js";
 import { AppLoading } from "expo";
 import {NavigationActions} from 'react-navigation';
-import * as firebase from 'firebase';
+import Service from "../../services/service.js";
 
+import NumberFormat from 'react-number-format';
 class MfList extends Component {
     state = {
         dataLoaded: false,
         mfData:[]
       };
     componentWillMount() {
-        // firebase.database().ref('mfListTest').set(
-        //     {
-        //         name: 'MF Name'
-        //     }
-        // ).then(() => {
-        //     console.log('INSERTED !');
-        //     alert("Inserted");
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
-        firebase.database().ref('MfList').on('value', (data)=>{
+      this.service = new Service();
+      this.mfIds = [];
+      this.service.getAllMfList().on('value', (data)=>{
             this.setState({ dataLoaded: true });
             var pdata = [];
             pdata = this._prepareData(data.val());
@@ -44,8 +37,10 @@ class MfList extends Component {
     }
     _prepareData(data) {
         var pdata = [];
+        this.mfIds = [];
         Object.keys(data).forEach(key => {
             pdata.push(data[key]);
+            this.mfIds.push(data[key].id);
           });
           return pdata;
     }
@@ -57,6 +52,9 @@ class MfList extends Component {
         },
       });
       this.props.navigation.dispatch(navigateAction);
+    }
+    refreshNav() {
+      this.service.getLatestNav(this.mfIds);
     }
   render() {
         if (!this.state.dataLoaded) {
@@ -72,7 +70,11 @@ class MfList extends Component {
           <Body style={{paddingRight:10, flex: 3}}>
             <Title>Mutual Funds List</Title>
           </Body>
-          <Right />
+          <Right >
+          <Button transparent onPress={()=>{this.refreshNav()}}>
+                <Icon type="AntDesign" name="reload1" />
+              </Button>
+          </Right>
         </Header>
 
         <Content>
@@ -80,8 +82,6 @@ class MfList extends Component {
             dataArray={this.state.mfData}
             renderRow={data =>
               <ListItem>
-                {/* <Left>
-                </Left> */}
                 <Body>
                   <Text>
                     {data.name}
@@ -91,9 +91,9 @@ class MfList extends Component {
                   </Text>
                 </Body>
                 <Right>
-                  <Text style={data.profitOrLoss <= 0 ? styles.red : styles.green}>
-                    {data.profitOrLoss}
-                  </Text>
+                  <NumberFormat value={data.profitOrLoss} displayType={'text'} thousandSeparator={true} decimalScale={2}
+                    fixedDecimalScale= {true} renderText={value => <Text style={value <= 0 ? styles.red : styles.green}>
+                    {value}</Text>} />
               <Button transparent onPress={() => this.gotToDetailsPage(data) }>
                   <Icon name="arrow-forward" />
                 </Button>
