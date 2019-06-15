@@ -54,7 +54,10 @@ class MfList extends Component {
       this.props.navigation.dispatch(navigateAction);
     }
     refreshNav() {
-      this.service.getLatestNav(this.mfIds);
+      this.setState({ dataLoaded: false });
+      this.service.getLatestNav(this.mfIds, this.state.mfData).then(()=>{
+        this.setState({ dataLoaded: true });
+      });
     }
   render() {
         if (!this.state.dataLoaded) {
