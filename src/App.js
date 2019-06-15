@@ -31,7 +31,7 @@ const Drawer = createDrawerNavigator(
       MfAddEdit:{screen:MfAddEdit}
     },
     {
-      initialRouteName: "MfList",
+      initialRouteName: "Login",
       // contentOptions: {
       //   activeTintColor: "#e91e63"
       // },

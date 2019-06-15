@@ -8,5 +8,8 @@ export default {
     walignItems:'center',
     justifyContent:'center',
     padding : 20
+  },
+  topSpace:{
+    marginTop: 20
   }
   };
