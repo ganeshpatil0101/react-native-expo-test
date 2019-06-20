@@ -26,14 +26,21 @@ class MfList extends Component {
         mfData:[]
       };
     componentWillMount() {
-      this.service = new Service();
+      console.log("=====> componentWillMount <======= ");
+      this.service = Service.getInstance();
       this.mfIds = [];
-      this.service.getAllMfList().on('value', (data)=>{
-            this.setState({ dataLoaded: true });
-            var pdata = [];
-            pdata = this._prepareData(data.val());
-            this.setState({mfData : pdata});
-        }, (err) => {console.error(err)} );
+      this.service.getAllMfList((data)=>{
+        this.setState({ dataLoaded: true });
+        if(data) {
+          var pdata = [];
+          pdata = this._prepareData(data.val());
+          this.setState({mfData : pdata});
+        }
+      },  (err) => {console.error(err)} );
+    }
+    componentWillUnmount() {
+      // console.log(" ====> componentWillUnmount ");
+      // this.mfListSub();
     }
     _prepareData(data) {
         var pdata = [];

@@ -27,7 +27,7 @@ class MfDetails extends Component {
       };
     componentWillMount() {
       this.nservice = new NavigateService();
-      this.service = new Service();
+      this.service = Service.getInstance();
     }
     editMf(data) {
       const { navigation } = this.props;
@@ -50,7 +50,7 @@ class MfDetails extends Component {
           {text: 'OK', onPress: () => {
             this.service.deleteMf(data.id).then(()=>{
               console.log("mf deleted  ");
-              this.nservice.navigateTo('MfList', {}, this.props.navigation);
+              this.navigateToList();
             });
           }
         },
@@ -58,13 +58,16 @@ class MfDetails extends Component {
         {cancelable: false},
       );
     }
+    navigateToList() {
+      this.nservice.navigateTo('MfList', {}, this.props.navigation);
+    }
   render() {
     const { navigation } = this.props;
     const data = navigation.getParam('data', 'NO-ID');
       return (<Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.navigateToList()}>
               <Icon name="arrow-back" />
             </Button>
           </Left>

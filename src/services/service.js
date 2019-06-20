@@ -5,51 +5,87 @@ const DATABASE = Object.freeze({
   NAV_API:'https://www.amfiindia.com/spages/NAVAll.txt'
 });
 export default class Service{
-
+  static myInstance = null; 
   constructor() {
     this.arrData = [];
     this.rawData = '';
   }
-
+  static getInstance() {
+    if (Service.myInstance == null) {
+      Service.myInstance = new Service();
+    }
+    return this.myInstance;
+  }
+  
+  logout() {
+    try{
+      console.log("===>destroy ",this.dbRef);
+      if(this.dbRef) {
+        this.dbRef.off('value', this.successCb);
+      }
+    }catch(e){
+      console.error(e);
+    }
+    return firebase.auth().signOut();
+  }
   saveMfData(dataWrapper) {
-   return firebase.database().ref(DATABASE.MfStore+"/"+dataWrapper.id).set(dataWrapper).then((res) => {
+    return firebase.database().ref(this.getDBPath(dataWrapper.id)).set(dataWrapper).then((res) => {
         console.log('INSERTED !');
     }).catch((error) => {
         console.log(error);
     });
   }
   deleteMf(mfId) {
-    return firebase.database().ref(DATABASE.MfStore+"/"+mfId).remove().then((res) => {
+    return firebase.database().ref(this.getDBPath(mfId)).remove().then((res) => {
       console.log('deleted succsufully !');
       return res;
     }).catch((error) => {
         console.log(error);
     });
   }
-  getAllMfList() {
-    return firebase.database().ref(DATABASE.MfStore);
+  getAllMfList(successCb, errorCb) {
+    this.successCb = successCb;
+    this.dbRef = this.getDbRef();
+    return this.dbRef.on('value', this.successCb , errorCb);
+  }
+  getDbRef() {
+    this.dbRef = firebase.database().ref('users/'+ this.getUserUId()+'/'+ DATABASE.MfStore);
+    return this.dbRef;
+  }
+  getDBPath(dataUid) {
+    return 'users/'+ this.getUserUId()+'/'+ DATABASE.MfStore + "/" + dataUid;
+  }
+  getUserUId() {
+    return firebase.auth().currentUser.uid;
   }
   getLatestNav(mfIds, mfData) {
     // add caching here
-    return fetch(DATABASE.NAV_API).then((res) => {
-      this.rawData = res._bodyText;
-      this.arrData = this.rawData.split('\n');
-      for(let m=0;m<mfIds.length; m++) {
-        let mfId = mfIds[m];
-        let latestNav = this._getNavFor(mfId, this.arrData, this.rawData);
-        let data = find(mfData, {id: mfId});
-        latestNav =  latestNav.split(';')[4];
-        console.log("lastestNav for ", mfId , ' latestNav ',latestNav, ' OldNav = ', data.currentNav);
-        if(latestNav != data.currentNav) {
-          let udata = this.getCalculatedValues(mfId, latestNav, data);
-          if(udata) {
-            this.saveMfData(udata).then((res)=> {
-              console.log('Updated Nav Value ', mfId);
-            });
-          }
+    if(this.arrData && this.rawData) {
+      this.processData(this.arrData, this.rawData, mfIds, mfData);
+    } else {
+      return fetch(DATABASE.NAV_API).then((res) => {
+        this.rawData = res._bodyText;
+        this.arrData = this.rawData.split('\n');
+        this.processData(this.arrData, this.rawData, mfIds, mfData);
+      }).catch((e)=>console.error(e));
+    }
+  }
+  processData(arrData, rawData, mfIds, mfData) {
+    for(let m=0;m<mfIds.length; m++) {
+      let mfId = mfIds[m];
+      let latestNav = this._getNavFor(mfId, arrData, rawData);
+      let data = find(mfData, {id: mfId});
+      latestNav =  latestNav.split(';')[4];
+      console.log("lastestNav for ", mfId , ' latestNav ',latestNav, ' OldNav = ', data.currentNav);
+      if(latestNav != data.currentNav) {
+        let udata = this.getCalculatedValues(mfId, latestNav, data);
+        if(udata) {
+          this.saveMfData(udata).then((res)=> {
+            console.log('Updated Nav Value ', mfId);
+          });
         }
       }
-    }).catch((e)=>console.error(e));
+    }
   }
   getCalculatedValues(mfId, nav, data) {
     data.currentNav = nav;

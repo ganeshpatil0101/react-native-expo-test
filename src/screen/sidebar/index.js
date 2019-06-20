@@ -13,6 +13,7 @@ import {
 } from "native-base";
 import styles from "./style";
 import NavigateService from "../../services/navigate.service";
+import Service from '../../services/service';
 const drawerCover = require("../../../assets/drawer-cover.png");
 const drawerImage = require("../../../assets/logo-kitchen-sink.png");
 /*
@@ -209,6 +210,12 @@ const datas = [
     route: "MfAddEdit",
     icon: "ios-add-circle",
     bg: "#48525D"
+  },
+  {
+    name: " Logout ",
+    route: "logout",
+    icon: "ios-log-out",
+    bg: "#48525D"
   }
 ];
 class SideBar extends Component {
@@ -219,8 +226,19 @@ class SideBar extends Component {
       shadowRadius: 4
     };
     this.nservice = new NavigateService();
+    this.service = Service.getInstance();
   }
-
+  navigateTo(route) {
+    if(route == 'logout') {
+      this.service.logout().then(()=> {
+        console.log('User Logout');
+        this.nservice.navigateTo('Login', {}, this.props.navigation);
+        alert('Logged out successfully.');
+      }).catch(e=>console.error(e));
+    } else {
+      this.nservice.navigateTo(route, {}, this.props.navigation);
+    }
+  }
   render() {
     return (
       <Container>
@@ -237,7 +255,7 @@ class SideBar extends Component {
               <ListItem
                 button
                 noBorder
-                onPress={() => this.nservice.navigateTo(data.route, {}, this.props.navigation)}
+                onPress={() => this.navigateTo(data.route)}
               >
                 <Left>
                   <Icon

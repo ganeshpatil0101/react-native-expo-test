@@ -29,7 +29,7 @@ class MfAddEdit extends Component {
       };
       constructor(props) {
         super(props);
-        this.fService = new Service();
+        this.fService = Service.getInstance();
         this.nservice = new NavigateService();
       }
     componentWillMount() {
@@ -108,7 +108,7 @@ class MfAddEdit extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
+            <Button transparent onPress={() => this.nservice.navigateTo('MfList', {}, this.props.navigation)}>
               <Icon name="arrow-back" />
             </Button>
           </Left>
