@@ -14,7 +14,7 @@ Scan to open appplication
 ![expo](assets/images/expo.png)
 
 ## Screenshots
-![login](assets/images/Login.png)
+![login](assets/images/Login.png =640x320)
 ![list](assets/images/List.png)
 ![details](assets/images/Details.png)
 ![edit](assets/images/Edit.png)
