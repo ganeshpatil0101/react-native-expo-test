@@ -1,10 +1,10 @@
 {
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 11428,
-  "expoServerNgrokUrl": "https://68-9h3.ganeshpatil0101.react-native-expo-test.exp.direct",
-  "packagerNgrokUrl": "https://packager.68-9h3.ganeshpatil0101.react-native-expo-test.exp.direct",
-  "ngrokPid": 12948,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
   "webpackServerPort": null
 }
