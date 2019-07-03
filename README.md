@@ -14,11 +14,10 @@ Scan to open appplication
 ![expo](assets/images/expo.png)
 
 ## Screenshots
-<img src="assets/images/Login.png" width="640" height="320" />
-![list](assets/images/List.png)
-![details](assets/images/Details.png)
-![edit](assets/images/Edit.png)
-
+<img src="assets/images/Login.png" width="320" height="640" />
+<img src="assets/images/List.png" width="320" height="640" />
+<img src="assets/images/Details.png" width="320" height="640" />
+<img src="assets/images/Edit.png" width="320" height="640" />
 
 #### Pending task
 * Add SIP Feature
