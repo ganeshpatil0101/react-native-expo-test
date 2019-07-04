@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, StatusBar } from "react-native";
-import { Container, Button, Toast , Text, Form , Item, Input,Label, Separator } from "native-base";
+import { Container, Button, Toast , Text, Form , Item, Input,Label, Separator, H1 } from "native-base";
 import {NavigationActions} from 'react-navigation';
 import styles from "./styles";
 import * as firebase from 'firebase';
@@ -38,7 +38,8 @@ class Login extends Component {
             Toast.show({
                 text: "User Logged In Succssfully ... ",
                 buttonText: "Okay",
-                duration: 10000
+                duration: 10000,
+                type:'success'
               });
 
               this.nservice.navigateTo('MfList', {}, this.props.navigation);
@@ -89,14 +90,17 @@ class Login extends Component {
       <Container >
         <StatusBar barStyle="light-content" />
         <View style={styles.loginContainer}>
+          <View style={styles.loginHeader}>
+            <H1>  TrackDirectMf </H1>
+          </View>
             <Form >
                 <Item floatingLabel>
-                <Label>Username</Label>
-                <Input onChangeText= {(text)=> this.setState({userName: text})} />
+                <Label>Email</Label>
+                <Input keyboardType='email-address' textContentType='emailAddress' onChangeText= {(text)=> this.setState({userName: text})} />
                 </Item>
                 <Item floatingLabel last>
-                <Label>Password</Label>
-                <Input secureTextEntry={true} onChangeText= {(password)=> this.setState({password: password})} />
+                  <Label>Password</Label>
+                  <Input secureTextEntry={true} onChangeText= {(password)=> this.setState({password: password})} />
                 </Item>
             </Form>
             <Button block onPress={()=>{this.onLogin()}} style={styles.topSpace}>

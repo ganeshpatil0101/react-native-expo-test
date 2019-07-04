@@ -126,7 +126,7 @@ class MfAddEdit extends Component {
                 </Item>
                 <Item floatingLabel>
                     <Label>Name</Label>
-                    <Input value={this.state.name} onChangeText= {(text)=> this.setState({name: text})}/>
+                    <Input keyboardType='name-phone-pad' value={this.state.name} onChangeText= {(text)=> this.setState({name: text})}/>
                 </Item>
                 <Item picker style={{paddingLeft:10,paddingRight:10, paddingTop:10}}>
                     <Picker
@@ -160,11 +160,11 @@ class MfAddEdit extends Component {
                 </Item>
                 <Item floatingLabel>
                     <Label>Total Units</Label>
-                    <Input value={this.state.closingUnits} onChangeText= {(text)=> this.setState({closingUnits: text})}/>
+                    <Input keyboardType='decimal-pad' value={this.state.closingUnits} onChangeText= {(text)=> this.setState({closingUnits: text})}/>
                 </Item>
                 <Item floatingLabel>
                     <Label>Current Nav</Label>
-                    <Input value={this.state.currentNav} onChangeText= {(text)=> this.setState({currentNav: text})}/>
+                    <Input keyboardType='decimal-pad' value={this.state.currentNav} onChangeText= {(text)=> this.setState({currentNav: text})}/>
                 </Item>
                 {/* <Item floatingLabel>
                     <Label>Current Value</Label>
@@ -172,7 +172,7 @@ class MfAddEdit extends Component {
                 </Item> */}
                 <Item floatingLabel>
                     <Label>Total Invested Amount</Label>
-                    <Input value={this.state.totalInvAmount} onChangeText= {(text)=> this.setState({totalInvAmount: text})}/>
+                    <Input keyboardType='decimal-pad' value={this.state.totalInvAmount} onChangeText= {(text)=> this.setState({totalInvAmount: text})}/>
                 </Item>
                   <Button block onPress={()=>{this.saveMf()}}>
                     <Text>Save</Text>

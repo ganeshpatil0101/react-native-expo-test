@@ -9,6 +9,10 @@ export default {
     justifyContent:'center',
     padding : 20
   },
+  loginHeader:{
+    justifyContent:'center',
+    alignItems: "center"
+  },
   topSpace:{
     marginTop: 20
   }

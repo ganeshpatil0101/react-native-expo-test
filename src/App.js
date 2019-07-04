@@ -10,16 +10,16 @@ import MfList from './screen/mf/mfList';
 import MfDetails from './screen/mf/mfDetails';
 import MfAddEdit from './screen/mf/mfAddEdit';
 // TODO
-// import { YellowBox } from 'react-native';
-// import _ from 'lodash';
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
-// YellowBox.ignoreWarnings(['Setting a timer']);
-// const _console = _.clone(console);
-// console.warn = message => {
-//   if (message.indexOf('Setting a timer') <= -1) {
-//     _console.warn(message);
-//   }
-// };
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
 
 
 const Drawer = createDrawerNavigator(
