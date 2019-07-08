@@ -25,7 +25,13 @@ console.warn = message => {
 const Drawer = createDrawerNavigator(
      {
       Home: { screen: Home },
-      Login: { screen: Login },
+      Login: { screen: Login, 
+        navigationOptions: {
+        title: "Login",
+        header: {
+          visible: false,
+        },
+      }, },
       MfList:{screen:MfList},
       MfDetails:{screen:MfDetails},
       MfAddEdit:{screen:MfAddEdit}
@@ -38,18 +44,18 @@ const Drawer = createDrawerNavigator(
       contentComponent: props => <SideBar {...props} />
     }
   );
-const AppNavigator = createStackNavigator(
-    {
-      Drawer: { screen: Drawer },
-      Card: { screen: Card},
-    },
-    {
-      initialRouteName: "Drawer",
-      headerMode: "none"
-    }
-);
+// const AppNavigator = createStackNavigator(
+//     {
+//       Drawer: { screen: Drawer },
+//       Card: { screen: Card},
+//     },
+//     {
+//       initialRouteName: "Drawer",
+//       headerMode: "none"
+//     }
+// );
   
-  const AppContainer = createAppContainer(AppNavigator);
+  const AppContainer = createAppContainer(Drawer);
   
   export default () =>
     <Root>

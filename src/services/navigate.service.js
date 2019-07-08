@@ -1,5 +1,5 @@
 
-import {NavigationActions} from 'react-navigation';
+import { NavigationActions} from 'react-navigation';
 
 export default class NavigateService{
 
@@ -12,5 +12,6 @@ export default class NavigateService{
         params: param,
       });
       navigation.dispatch(navigateAction);
+
   }
 }

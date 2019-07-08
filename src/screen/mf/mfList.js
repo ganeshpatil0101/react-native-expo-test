@@ -14,6 +14,7 @@ import {
   Body,
   Right
 } from "native-base";
+import { BackHandler } from 'react-native';
 import styles from "./styles.js";
 import { AppLoading } from "expo";
 import {NavigationActions} from 'react-navigation';
@@ -26,7 +27,6 @@ class MfList extends Component {
         mfData:[]
       };
     componentWillMount() {
-      console.log("=====> componentWillMount <======= ");
       this.service = Service.getInstance();
       this.mfIds = [];
       this.service.getAllMfList((data)=>{
@@ -37,10 +37,11 @@ class MfList extends Component {
           this.setState({mfData : pdata});
         }
       },  (err) => {console.error(err)} );
+
+      this.backHandler =  BackHandler.addEventListener('hardwareBackPress', function() {return true})
     }
     componentWillUnmount() {
-      // console.log(" ====> componentWillUnmount ");
-      // this.mfListSub();
+      this.backHandler();
     }
     _prepareData(data) {
         var pdata = [];

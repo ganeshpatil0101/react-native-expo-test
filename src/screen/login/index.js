@@ -18,10 +18,12 @@ class Login extends Component {
     }
     componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
-          this.setState({
-            loading: false,
-            user,
-          });
+          if(user) {
+            // TODO add loading icon
+            // this.setState({loading:true})
+            console.log("user is already signed in navigating to list");
+            this.nservice.navigateTo('MfList', {}, this.props.navigation);
+          }
         });
       }
       componentWillUnmount() {
@@ -32,58 +34,54 @@ class Login extends Component {
         
         firebase.auth().signInWithEmailAndPassword(userName, password)
             .then((user) => {
-            // If you need to do anything with the user, do it here
-            // The user will be logged in automatically by the 
-            // `onAuthStateChanged` listener we set up in App.js earlier
             Toast.show({
                 text: "User Logged In Succssfully ... ",
                 buttonText: "Okay",
                 duration: 10000,
                 type:'success'
               });
-
               this.nservice.navigateTo('MfList', {}, this.props.navigation);
-             // this.props.navigation.dispatch(navigateAction);
-              //this.props.navigation.dispatch(DrawerActions.closeDrawer())
             })
             .catch((error) => {
             const { code, message } = error;
-            // For details of error codes, see the docs
-            // The message contains the default Firebase string
-            // representation of the error
               Toast.show({
                 text: message,
                 position:'top',
                 duration: 10000,
                 type:'danger'
               });
+              this.clearFields();
             });
     }
     onRegister = () => {
     const { userName, password } = this.state;
     firebase.auth().createUserWithEmailAndPassword(userName, password)
         .then((user) => {
-        Toast.show({
-            text: "User Registerd succssfully ... ",
-            buttonText: "Okay",
-            duration: 10000,
-            type:"success"
-          });
-        console.log("User Registerd succssfully ... ");
+          Toast.show({
+              text: "User Registerd succssfully ... ",
+              buttonText: "Okay",
+              duration: 10000,
+              type:"success"
+            });
+            console.log("User Registerd succssfully ... ");
         })
         .catch((error) => {
-        const { code, message } = error;
-        // For details of error codes, see the docs
-        // The message contains the default Firebase string
-        // representation of the error
-        Toast.show({
-            text: "User Registration Failed ... "+message,
-            buttonText: "Okay",
-            duration: 10000,
-            type:'danger',
-            position:'top'
-          });
+          const { code, message } = error;
+          Toast.show({
+              text: "User Registration Failed ... "+message,
+              buttonText: "Okay",
+              duration: 10000,
+              type:'danger',
+              position:'top'
+            });
+            this.clearFields();
         });
+    }
+    clearFields =() => {
+      this.setState({
+        userName:'',
+        password:''
+      });
     }
   render() {
     return (
