@@ -44,17 +44,6 @@ const Drawer = createDrawerNavigator(
       contentComponent: props => <SideBar {...props} />
     }
   );
-// const AppNavigator = createStackNavigator(
-//     {
-//       Drawer: { screen: Drawer },
-//       Card: { screen: Card},
-//     },
-//     {
-//       initialRouteName: "Drawer",
-//       headerMode: "none"
-//     }
-// );
-  
   const AppContainer = createAppContainer(Drawer);
   
   export default () =>

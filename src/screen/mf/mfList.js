@@ -12,7 +12,8 @@ import {
   Thumbnail,
   Left,
   Body,
-  Right
+  Right,
+  View
 } from "native-base";
 import { BackHandler } from 'react-native';
 import styles from "./styles.js";
@@ -27,6 +28,7 @@ class MfList extends Component {
         mfData:[]
       };
     componentWillMount() {
+      this.setState({dataLoaded : false});
       this.service = Service.getInstance();
       this.mfIds = [];
       this.service.getAllMfList((data)=>{
@@ -46,11 +48,13 @@ class MfList extends Component {
     _prepareData(data) {
         var pdata = [];
         this.mfIds = [];
-        Object.keys(data).forEach(key => {
+        if(data){
+          Object.keys(data).forEach(key => {
             pdata.push(data[key]);
             this.mfIds.push(data[key].id);
           });
-          return pdata;
+        }
+        return pdata;
     }
     gotToDetailsPage(data) {
       const navigateAction = NavigationActions.navigate({
@@ -67,6 +71,17 @@ class MfList extends Component {
         this.setState({ dataLoaded: true });
       });
     }
+    _renderNoData() {
+      if (this.state.mfData.length == 0) {
+          return (
+                  <View>
+                      <Text style={{ alignSelf: "center" }}> No Data Available. </Text>
+                  </View>
+          );
+      } else {
+          return null;
+      }
+  }
   render() {
         if (!this.state.dataLoaded) {
             return <AppLoading />;
@@ -87,8 +102,8 @@ class MfList extends Component {
               </Button>
           </Right>
         </Header>
-
         <Content>
+          {this._renderNoData()}
           <List
             dataArray={this.state.mfData}
             renderRow={data =>

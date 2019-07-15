@@ -1,7 +1,8 @@
 import * as firebase from 'firebase';
 import {find} from 'lodash';
 const DATABASE = Object.freeze({
-  MfStore:'MfList',
+  MfStore:'MfData',
+  MfList: 'MfList',
   NAV_API:'https://www.amfiindia.com/spages/NAVAll.txt'
 });
 export default class Service{
@@ -29,14 +30,21 @@ export default class Service{
     return firebase.auth().signOut();
   }
   saveMfData(dataWrapper) {
-    return firebase.database().ref(this.getDBPath(dataWrapper.id)).set(dataWrapper).then((res) => {
+    return firebase.database().ref(this.getDBCollectionPath(dataWrapper.id)).set(dataWrapper).then((res) => {
         console.log('INSERTED !');
     }).catch((error) => {
         console.log(error);
     });
   }
+  initlizeMfStore(uid) {
+    return firebase.database().ref(DATABASE.MfStore + '/'+ uid +'/defaults/').set({'initilized':true}).then((res) => {
+        console.log('Initilzed !');
+    }).catch((error) => {
+        console.log(error);
+    });
+  }
   deleteMf(mfId) {
-    return firebase.database().ref(this.getDBPath(mfId)).remove().then((res) => {
+    return firebase.database().ref(this.getDBCollectionPath(mfId)).remove().then((res) => {
       console.log('deleted succsufully !');
       return res;
     }).catch((error) => {
@@ -49,11 +57,11 @@ export default class Service{
     return this.dbRef.on('value', this.successCb , errorCb);
   }
   getDbRef() {
-    this.dbRef = firebase.database().ref('users/'+ this.getUserUId()+'/'+ DATABASE.MfStore);
+    this.dbRef = firebase.database().ref(DATABASE.MfStore + '/'+ this.getUserUId()+'/'+ DATABASE.MfList);
     return this.dbRef;
   }
-  getDBPath(dataUid) {
-    return 'users/'+ this.getUserUId()+'/'+ DATABASE.MfStore + "/" + dataUid;
+  getDBCollectionPath(dataUid) {
+    return DATABASE.MfStore + '/'+ this.getUserUId()+'/'+ DATABASE.MfList + "/" + dataUid;
   }
   getUserUId() {
     return firebase.auth().currentUser.uid;

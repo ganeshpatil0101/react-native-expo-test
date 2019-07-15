@@ -5,7 +5,8 @@ import {NavigationActions} from 'react-navigation';
 import styles from "./styles";
 import * as firebase from 'firebase';
 import NavigateService from '../../services/navigate.service';
-
+import Service from "../../services/service";
+import { AppLoading } from "expo";
 class Login extends Component {
     constructor(){
         super();
@@ -15,14 +16,15 @@ class Login extends Component {
             showToast: false
         }
       this.nservice = new NavigateService();
+      this.service = Service.getInstance();
     }
     componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
           if(user) {
             // TODO add loading icon
             // this.setState({loading:true})
-            console.log("user is already signed in navigating to list");
-            this.nservice.navigateTo('MfList', {}, this.props.navigation);
+            console.log("user is already signed in navigating to home");
+            this.nservice.navigateTo('Home', {}, this.props.navigation);
           }
         });
       }
@@ -31,7 +33,6 @@ class Login extends Component {
       }
     onLogin = () => {
         const { userName, password } = this.state;
-        
         firebase.auth().signInWithEmailAndPassword(userName, password)
             .then((user) => {
             Toast.show({
@@ -40,7 +41,7 @@ class Login extends Component {
                 duration: 10000,
                 type:'success'
               });
-              this.nservice.navigateTo('MfList', {}, this.props.navigation);
+              this.nservice.navigateTo('Home', {}, this.props.navigation);
             })
             .catch((error) => {
             const { code, message } = error;
@@ -51,12 +52,17 @@ class Login extends Component {
                 type:'danger'
               });
               this.clearFields();
+            })
+            .finally(()=>{
+              this.setState({loading:false});
             });
     }
     onRegister = () => {
     const { userName, password } = this.state;
+    this.setState({loading:true})
     firebase.auth().createUserWithEmailAndPassword(userName, password)
         .then((user) => {
+          console.log("user uid : ",user.user.uid);
           Toast.show({
               text: "User Registerd succssfully ... ",
               buttonText: "Okay",
@@ -64,6 +70,9 @@ class Login extends Component {
               type:"success"
             });
             console.log("User Registerd succssfully ... ");
+            this.service.initlizeMfStore(user.user.uid).then(()=>{
+              console.log("Database Initialized ");
+            })
         })
         .catch((error) => {
           const { code, message } = error;
@@ -75,15 +84,22 @@ class Login extends Component {
               position:'top'
             });
             this.clearFields();
+        })
+        .finally(()=>{
+          this.setState({loading:false});
         });
     }
     clearFields =() => {
       this.setState({
         userName:'',
-        password:''
+        password:'',
+        loading:false
       });
     }
   render() {
+    if (this.state.loading) {
+        return <AppLoading />;
+    }
     return (
       <Container >
         <StatusBar barStyle="light-content" />

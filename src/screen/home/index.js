@@ -13,12 +13,11 @@ class Home extends Component {
       <Container>
         <StatusBar barStyle="light-content" />
         <ImageBackground source={launchscreenBg} style={styles.imageContainer}>
-          <View style={styles.logoContainer}>
-           
-          </View>
+          
           <View
             style={{
               alignItems: "center",
+              marginVertical:250,
               marginBottom: 50,
               backgroundColor: "transparent"
             }}
